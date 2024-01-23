@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:install_dressup/screens/about_app.dart';
 import 'package:install_dressup/screens/chat_us.dart';
@@ -49,7 +50,7 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
         ),
       ),
       //body in tabviewwith each segment
-      floatingActionButton: UploadApp(),
+      floatingActionButton: kIsWeb ? null : UploadApp(),
       body: TabBarView(controller: tabController, children: [
         AboutApp(appDescriptionText: fakeData, appDescriptionPictures: []),
         UserData(userData: fakeData),

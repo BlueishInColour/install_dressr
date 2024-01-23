@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class InstallBar extends StatefulWidget {
@@ -13,44 +14,30 @@ class InstallBarState extends State<InstallBar> {
   @override
   build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         //app logo
-        SizedBox(
+        Container(
           height: 70,
           width: 70,
-          child: ClipRRect(
+          decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: FileImage(
-                          File(
-                              '/home/blueish/Desktop/Screenshot at 2024-01-22 08-40-13.png'),
-                        ))),
-              )),
+              color: Colors.black,
+              image: DecorationImage(image: CachedNetworkImageProvider(''))),
         ),
         SizedBox(width: 10),
 //-------------------
-        Expanded(
+        SizedBox(
+          width: 130,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //name
 
-              Row(
-                children: [
-                  Text(
-                    'dress`r',
-                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.w800),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'v0.1',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
-                  ),
-                ],
+              Text(
+                'dress`r',
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.w800),
               ),
 
               //short description
@@ -58,7 +45,7 @@ class InstallBarState extends State<InstallBar> {
               Text(
                 'meet fashion, cosplay',
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     color: Colors.black54,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w400),
@@ -74,10 +61,10 @@ class InstallBarState extends State<InstallBar> {
           children: [
             //upload date and time
             Text(
-              '17/05/2023',
+              '17/05/23',
               style: TextStyle(
                   color: Colors.black54,
-                  fontSize: 12,
+                  fontSize: 10,
                   fontWeight: FontWeight.w700),
             ),
             //app size
@@ -92,12 +79,16 @@ class InstallBarState extends State<InstallBar> {
 
             ElevatedButton(
                 style: ButtonStyle(
+                    fixedSize: MaterialStatePropertyAll(Size(50, 30)),
                     backgroundColor: MaterialStatePropertyAll(Colors.black),
                     foregroundColor: MaterialStatePropertyAll(Colors.white)),
                 onPressed: () {
                   debugPrint('installit');
                 },
-                child: Text('install'))
+                child: Text(
+                  'install',
+                  style: TextStyle(fontSize: 10),
+                ))
           ],
         )
       ],

@@ -31,16 +31,10 @@ class AboutAppState extends State<AboutApp> {
                   addAutomaticKeepAlives: true,
                   itemBuilder: ((context, index) {
                     return Container(
-                      height: 230,
-                      width: 150,
-                      margin: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: FileImage(File(
-                                  '/home/blueish/Desktop/Screenshot at 2024-01-22 08-40-13.png')))),
-                    );
+                        height: 230,
+                        width: 150,
+                        margin: EdgeInsets.all(6),
+                        decoration: BoxDecoration(color: Colors.black));
                   })),
             ),
           ),

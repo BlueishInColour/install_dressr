@@ -40,12 +40,18 @@ dependencies:
   path_provider: ^2.1.2
   image_picker: ^1.0.7
   line_icons: ^2.0.3
+  imagekit_io: ^0.0.3
   cached_network_image: ^3.3.1
 
   # //firebase
-  firebase_core: ^2.24.2
-  firebase_storage: ^11.6.0
-  firebase_database: ^10.4.0
+  firebase_core: ^2.24.0
+  firebase_storage: ^11.5.3
+  firebase_auth: ^4.15.0
+  firebase_analytics: ^10.7.2
+  firebase_app_check: ^0.2.1+8
+  firebase_ui_auth: ^1.10.0
+  firebase_database: ^10.3.6
+  cloud_firestore: ^4.13.3
   # activout_firebase_options_selector: /
 
 
