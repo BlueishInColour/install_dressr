@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:install_dressup/screens/about_app.dart';
@@ -18,23 +19,41 @@ class Index extends StatefulWidget {
 
 class IndexState extends State<Index> with TickerProviderStateMixin {
   late TabController tabController;
+  var details = {};
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    getAppDetails();
+  }
+
+  getAppDetails() async {
+    var res = await FirebaseFirestore.instance.collection('app').get();
+    setState(() {
+      details = res.docs.first.data();
+    });
   }
 
   @override
   build(BuildContext context) {
     return Scaffold(
       //appbar about installs basic app details
+
       appBar: AppBar(
         toolbarHeight: 100,
         elevation: 0,
         // backgroundColor: Colors.white,
-        title: InstallBar(),
+        title: InstallBar(
+          appName: details['appName'],
+          appVersion: details['appVersion'],
+          appLogoPictureUrl: details['appLogoPictureUrl'],
+          appShortDescription: details['appShortDescription'],
+          appSize: details['fileSize'],
+          installLink: details['installLink'],
+          uploadDate: details['uploadDate'],
+        ),
 
         bottom: AppBar(
           title: TabBar(
@@ -50,11 +69,15 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
         ),
       ),
       //body in tabviewwith each segment
-      floatingActionButton: kIsWeb ? null : UploadApp(),
+      floatingActionButton:
+          //  kIsWeb ? null :
+          UploadApp(),
       body: TabBarView(controller: tabController, children: [
-        AboutApp(appDescriptionText: fakeData, appDescriptionPictures: []),
-        UserData(userData: fakeData),
-        TermsAndConditions(termsAndCondition: fakeData),
+        AboutApp(
+            appDescriptionText: details['longDescription'],
+            appDescriptionPictures: details['slidePictures']),
+        UserData(userData: details['userDataAndManagement']),
+        TermsAndConditions(termsAndCondition: details['termsAndConditions']),
         ChatUs()
       ]),
     );

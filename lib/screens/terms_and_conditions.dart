@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:install_dressup/screens/fake_data.dart';
 
 class TermsAndConditions extends StatefulWidget {
-  const TermsAndConditions({super.key, required this.termsAndCondition});
-  final String termsAndCondition;
+  TermsAndConditions({super.key, required this.termsAndCondition});
+  String termsAndCondition = ' ';
   @override
   State<TermsAndConditions> createState() => TermsAndConditionsState();
 }

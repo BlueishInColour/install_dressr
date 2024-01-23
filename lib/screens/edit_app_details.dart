@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
@@ -59,16 +60,18 @@ class EditAppDetailsState extends State<EditAppDetails> {
         {required TextEditingController controller,
         String hintText = '',
         int maxLines = 2}) {
-      return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: TextField(
-          controller: controller,
-          minLines: 1,
-          maxLines: maxLines,
-          decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: TextStyle(
-                  color: Colors.black54, fontStyle: FontStyle.normal)),
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: TextField(
+            controller: controller,
+            minLines: 1,
+            maxLines: maxLines,
+            decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: TextStyle(
+                    color: Colors.black54, fontStyle: FontStyle.normal)),
+          ),
         ),
       );
     }
@@ -119,31 +122,33 @@ class EditAppDetailsState extends State<EditAppDetails> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: ListView(
-            children: [
+          child: CustomScrollView(
+            slivers: [
               //applogo
-              Center(
-                child: Container(
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      image:
-                          DecorationImage(fit: BoxFit.cover, image: FileImage(
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        image:
+                            DecorationImage(fit: BoxFit.cover, image: FileImage(
 
-                              //  logoFilePath.isNotEmpt
-                              File(logoFilePath))),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Stack(children: [
-                    Positioned(
-                        // top: 1,
-                        // right: 1,
-                        child: IconButton(
-                            onPressed: () {
-                              uploadPicture();
-                            },
-                            icon: Icon(Icons.camera_alt_outlined)))
-                  ]),
+                                //  logoFilePath.isNotEmpt
+                                File(logoFilePath))),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Stack(children: [
+                      Positioned(
+                          // top: 1,
+                          // right: 1,
+                          child: IconButton(
+                              onPressed: () {
+                                uploadPicture();
+                              },
+                              icon: Icon(Icons.camera_alt_outlined)))
+                    ]),
+                  ),
                 ),
               ),
               //app name
@@ -158,8 +163,50 @@ class EditAppDetailsState extends State<EditAppDetails> {
                   hintText: 'short description'),
 
               //slide pictures
-              SizedBox(
-                child: ListView.builder(itemBuilder: (context)),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 100,
+                  width: 60,
+                  child: ListView.builder(
+                      itemCount: slidePictures.length + 1,
+                      itemBuilder: (context, index) {
+                        if (slidePictures.length + 1 == index) {
+                          return Container(
+                            height: 100,
+                            width: 60,
+                            child: Center(
+                              child: IconButton(
+                                  onPressed: () async {
+                                    List<String> pictures =
+                                        await pickPicture(false);
+                                    setState(() {
+                                      slidePictures.addAll(pictures);
+                                    });
+                                  },
+                                  icon: Icon(Icons.camera_alt_outlined)),
+                            ),
+                          );
+                        }
+                        return Stack(
+                          children: [
+                            CachedNetworkImage(
+                              height: 100,
+                              width: 60,
+                              imageUrl: slidePictures[index],
+                            ),
+                            Positioned(
+                                right: 5,
+                                top: 5,
+                                child: IconButton(
+                                  onPressed: () {
+                                    slidePictures.removeAt(index);
+                                  },
+                                  icon: Icon(Icons.cancel),
+                                ))
+                          ],
+                        );
+                      }),
+                ),
               ),
               //date
               textField(context,

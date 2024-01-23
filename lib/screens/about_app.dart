@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:install_dressup/screens/fake_data.dart';
 
 class AboutApp extends StatefulWidget {
-  const AboutApp(
+  AboutApp(
       {super.key,
       required this.appDescriptionPictures,
       required this.appDescriptionText});
-  final String appDescriptionText;
-  final List<String> appDescriptionPictures;
+  String appDescriptionText = ' ';
+  List<String> appDescriptionPictures = const [' '];
   @override
   State<AboutApp> createState() => AboutAppState();
 }

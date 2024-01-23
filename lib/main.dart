@@ -2,6 +2,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:install_dressup/firebase_options.dart';
+import 'package:install_dressup/screens/edit_app_details.dart';
 import 'package:install_dressup/screens/index.dart';
 
 void main() async {
@@ -16,22 +17,9 @@ void main() async {
   // ReCaptchaV3Provider('6LfPKFIpAAAAAGPzlYpoSWP6keZI1ikn8aSLXj0H'),
   // );
 
-
-
-
-
-
-
-
-
-
-
-
-  
-
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const Index(),
+    home: const EditAppDetails(),
     theme: ThemeData(
       inputDecorationTheme: InputDecorationTheme(
         enabledBorder: OutlineInputBorder(

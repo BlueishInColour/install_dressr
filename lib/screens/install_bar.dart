@@ -1,11 +1,27 @@
+import 'dart:core';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class InstallBar extends StatefulWidget {
-  const InstallBar({super.key});
-
+  InstallBar({
+    super.key,
+    required this.appName,
+    required this.appShortDescription,
+    required this.appSize,
+    required this.appVersion,
+    required this.installLink,
+    required this.uploadDate,
+    required this.appLogoPictureUrl,
+  });
+  String appName = ' ';
+  String appVersion = ' ';
+  String appShortDescription = ' ';
+  String uploadDate = ' ';
+  String appSize = ' ';
+  String installLink = ' ';
+  String appLogoPictureUrl = ' ';
   @override
   State<InstallBar> createState() => InstallBarState();
 }
@@ -36,14 +52,14 @@ class InstallBarState extends State<InstallBar> {
               //name
 
               Text(
-                'dress`r',
+                widget.appName,
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.w800),
               ),
 
               //short description
 
               Text(
-                'meet fashion, cosplay',
+                widget.appShortDescription,
                 style: TextStyle(
                     fontSize: 12,
                     color: Colors.black54,
@@ -61,7 +77,7 @@ class InstallBarState extends State<InstallBar> {
           children: [
             //upload date and time
             Text(
-              '17/05/23',
+              widget.uploadDate,
               style: TextStyle(
                   color: Colors.black54,
                   fontSize: 10,
@@ -69,7 +85,7 @@ class InstallBarState extends State<InstallBar> {
             ),
             //app size
             Text(
-              '12mb',
+              widget.appSize,
               style: TextStyle(
                   color: Colors.black54,
                   fontSize: 12,

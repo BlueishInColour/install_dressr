@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:install_dressup/screens/fake_data.dart';
 
 class UserData extends StatefulWidget {
-  const UserData({super.key, required this.userData});
-  final String userData;
+  UserData({super.key, required this.userData});
+  String userData = ' ';
 
   @override
   State<UserData> createState() => UserDataState();
