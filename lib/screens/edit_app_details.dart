@@ -21,7 +21,7 @@ class EditAppDetailsState extends State<EditAppDetails> {
   TextEditingController appNameController = TextEditingController();
   String logoFileUrl = '';
   List<String> slidePictures = [
-    'https://ik.imagekit.io/bluerubic/flutter_imagekit/afilename_GWterYMk2'
+    // 'https://ik.imagekit.io/bluerubic/flutter_imagekit/afilename_GWterYMk2'
   ];
 
   TextEditingController appShortDescriptionController = TextEditingController();
