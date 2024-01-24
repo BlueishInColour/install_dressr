@@ -9,7 +9,7 @@ class AboutApp extends StatefulWidget {
       required this.appDescriptionPictures,
       required this.appDescriptionText});
   String appDescriptionText = ' ';
-  List<String> appDescriptionPictures = const [' '];
+  List appDescriptionPictures = const [' '];
   @override
   State<AboutApp> createState() => AboutAppState();
 }

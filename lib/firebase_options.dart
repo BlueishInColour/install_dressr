@@ -23,7 +23,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -47,28 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCdfHt2N0OPyIldDZDx7szBoqHRa-fsmcE',
-    appId: '1:892277497846:web:feed6beab1e359843e31d7',
-    messagingSenderId: '892277497846',
-    projectId: 'installdressr',
-    authDomain: 'installdressr.firebaseapp.com',
-    storageBucket: 'installdressr.appspot.com',
+    apiKey: 'AIzaSyDmTPRxAbS7oN4I0WqJLIJkjWigNdRbIAI',
+    appId: '1:197586677595:web:f73a817e1ab66c2b3e747e',
+    messagingSenderId: '197586677595',
+    projectId: 'downloaddressr',
+    authDomain: 'downloaddressr.firebaseapp.com',
+    storageBucket: 'downloaddressr.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBoFRA0cw1SWkV-1x9Frol0--vMxHDtxKQ',
-    appId: '1:892277497846:android:59277649c41b6e753e31d7',
-    messagingSenderId: '892277497846',
-    projectId: 'installdressr',
-    storageBucket: 'installdressr.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCZYOYS9YzKiy6lCg5RgXyrv8J5ts5SX6U',
-    appId: '1:892277497846:ios:e9c7a4de4aa6b8f53e31d7',
-    messagingSenderId: '892277497846',
-    projectId: 'installdressr',
-    storageBucket: 'installdressr.appspot.com',
-    iosBundleId: 'com.installdressr.app',
+    apiKey: 'AIzaSyDPJTQAUTBfjp8_g5AQx7VAgHgZZd4wLYY',
+    appId: '1:197586677595:android:f7ea26b3cb7513c93e747e',
+    messagingSenderId: '197586677595',
+    projectId: 'downloaddressr',
+    storageBucket: 'downloaddressr.appspot.com',
   );
 }

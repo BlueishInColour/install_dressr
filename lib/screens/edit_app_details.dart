@@ -20,7 +20,9 @@ class EditAppDetailsState extends State<EditAppDetails> {
   final String appLogoPictureUrl = '';
   final appNameController = TextEditingController();
   String logoFilePath = '';
-  List<String> slidePictures = [];
+  List<String> slidePictures = [
+    'https://ik.imagekit.io/bluerubic/flutter_imagekit/afilename_GWterYMk2'
+  ];
 
   TextEditingController appShortDescriptionController = TextEditingController();
 
@@ -101,14 +103,17 @@ class EditAppDetailsState extends State<EditAppDetails> {
         data['appLogoPictureUrl'] = url;
       });
 
-      var res = await FirebaseFirestore.instance.collection('app').get();
-      if (res.docs.isNotEmpty) {
-        await FirebaseFirestore.instance
-            .collection('app')
-            .doc(res.docs.first.id)
-            .update(data);
-      } else {
-        await FirebaseFirestore.instance.collection('app').add(data);
+      if (data.isNotEmpty) {
+        var res = await FirebaseFirestore.instance.collection('app').get();
+        if (res.docs.isNotEmpty) {
+          await FirebaseFirestore.instance
+              .collection('app')
+              .doc(res.docs.first.id)
+              .update(data);
+        } else {
+          await FirebaseFirestore.instance.collection('app').add(data);
+        }
+        Navigator.pop(context);
       }
     }
 
@@ -142,11 +147,16 @@ class EditAppDetailsState extends State<EditAppDetails> {
                       Positioned(
                           // top: 1,
                           // right: 1,
-                          child: IconButton(
-                              onPressed: () {
-                                uploadPicture();
-                              },
-                              icon: Icon(Icons.camera_alt_outlined)))
+                          child: Center(
+                        child: IconButton(
+                            onPressed: () {
+                              uploadPicture();
+                            },
+                            icon: Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.amber,
+                            )),
+                      ))
                     ]),
                   ),
                 ),
@@ -164,50 +174,68 @@ class EditAppDetailsState extends State<EditAppDetails> {
 
               //slide pictures
               SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 100,
-                  width: 60,
-                  child: ListView.builder(
-                      itemCount: slidePictures.length + 1,
-                      itemBuilder: (context, index) {
-                        if (slidePictures.length + 1 == index) {
-                          return Container(
-                            height: 100,
-                            width: 60,
-                            child: Center(
-                              child: IconButton(
-                                  onPressed: () async {
-                                    List<String> pictures =
-                                        await pickPicture(false);
-                                    setState(() {
-                                      slidePictures.addAll(pictures);
-                                    });
-                                  },
-                                  icon: Icon(Icons.camera_alt_outlined)),
-                            ),
-                          );
-                        }
-                        return Stack(
-                          children: [
-                            CachedNetworkImage(
-                              height: 100,
-                              width: 60,
-                              imageUrl: slidePictures[index],
-                            ),
-                            Positioned(
-                                right: 5,
-                                top: 5,
-                                child: IconButton(
-                                  onPressed: () {
-                                    slidePictures.removeAt(index);
-                                  },
-                                  icon: Icon(Icons.cancel),
-                                ))
-                          ],
-                        );
-                      }),
-                ),
-              ),
+                  child: slidePictures.isNotEmpty
+                      ? SizedBox(
+                          height: 100,
+                          width: 60,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: slidePictures.length,
+                              itemBuilder: (context, index) {
+                                // if (slidePictures.length + 1 == index) {
+                                //   return Container(
+                                //     height: 100,
+                                //     width: 60,
+                                //     child: Center(
+                                //       child: IconButton(
+                                //           onPressed: () async {
+                                //             List<String> pictures =
+                                //                 await pickPicture(false);
+                                //             setState(() {
+                                //               slidePictures.addAll(pictures);
+                                //             });
+                                //           },
+                                //           icon:
+                                //               Icon(Icons.camera_alt_outlined)),
+                                //     ),
+                                //   );
+                                // }
+                                return Stack(
+                                  children: [
+                                    CachedNetworkImage(
+                                      height: 100,
+                                      width: 60,
+                                      imageUrl: slidePictures[index],
+                                    ),
+                                    Positioned(
+                                        right: 5,
+                                        top: 5,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            slidePictures.removeAt(index);
+                                          },
+                                          icon: Icon(Icons.cancel),
+                                        ))
+                                  ],
+                                );
+                              }),
+                        )
+                      : Container(
+                          height: 100,
+                          width: 60,
+                          child: Center(
+                            child: IconButton(
+                                onPressed: () async {
+                                  List<String> pictures =
+                                      await pickPicture(false);
+                                  setState(() {
+                                    slidePictures.addAll(pictures);
+                                  });
+                                  debugPrint('pictures added');
+                                },
+                                icon: Icon(Icons.camera_alt_outlined)),
+                          ),
+                        )),
               //date
               textField(context,
                   controller: uploadDateController, hintText: 'upload date'),
