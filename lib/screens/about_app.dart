@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:install_dressup/screens/fake_data.dart';
 
@@ -27,14 +28,17 @@ class AboutAppState extends State<AboutApp> {
               height: 350,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 8,
+                  itemCount: widget.appDescriptionPictures.length,
                   addAutomaticKeepAlives: true,
                   itemBuilder: ((context, index) {
                     return Container(
-                        height: 230,
-                        width: 150,
-                        margin: EdgeInsets.all(6),
-                        decoration: BoxDecoration(color: Colors.black));
+                      height: 230,
+                      width: 150,
+                      margin: EdgeInsets.all(6),
+                      decoration: BoxDecoration(color: Colors.black),
+                      child: CachedNetworkImage(
+                          imageUrl: widget.appDescriptionPictures[index]),
+                    );
                   })),
             ),
           ),

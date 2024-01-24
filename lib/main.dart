@@ -19,7 +19,7 @@ void main() async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const EditAppDetails(),
+    home: const Index(),
     theme: ThemeData(
       inputDecorationTheme: InputDecorationTheme(
         enabledBorder: OutlineInputBorder(

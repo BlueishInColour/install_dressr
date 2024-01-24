@@ -17,16 +17,16 @@ class EditAppDetails extends StatefulWidget {
 }
 
 class EditAppDetailsState extends State<EditAppDetails> {
-  final String appLogoPictureUrl = '';
-  final appNameController = TextEditingController();
-  String logoFilePath = '';
+  String appLogoPictureUrl = '';
+  TextEditingController appNameController = TextEditingController();
+  String logoFileUrl = '';
   List<String> slidePictures = [
     'https://ik.imagekit.io/bluerubic/flutter_imagekit/afilename_GWterYMk2'
   ];
 
   TextEditingController appShortDescriptionController = TextEditingController();
 
-  final appVersionController = TextEditingController();
+  TextEditingController appVersionController = TextEditingController();
 
   TextEditingController uploadDateController = TextEditingController();
   TextEditingController fileSizeController = TextEditingController();
@@ -36,28 +36,14 @@ class EditAppDetailsState extends State<EditAppDetails> {
       TextEditingController();
   TextEditingController termsAndConditionController = TextEditingController();
   uploadPicture() async {
-    XFile? file = await ImagePicker.platform
-        .getImageFromSource(source: ImageSource.gallery);
+    String url = await addSingleImage();
     setState(() {
-      logoFilePath = file!.path;
+      appLogoPictureUrl = url;
     });
   }
 
   @override
   build(BuildContext context) {
-    var data = {
-      'appName': appNameController.text,
-      'appVersion': appVersionController.text,
-      'appLogoPictureUrl': appLogoPictureUrl,
-      'appShortDescription': appShortDescriptionController.text,
-      'slidePictures': slidePictures,
-      'uploadDate': uploadDateController.text,
-      'fileSize': fileSizeController.text,
-      'installLink': intstallLinkController.text,
-      'longDescription': longDescriptionController.text,
-      'userDateAndManagement': userDataAndManagementController.text,
-      'termsAndConditions': termsAndConditionController.text
-    };
     Widget textField(context,
         {required TextEditingController controller,
         String hintText = '',
@@ -79,49 +65,60 @@ class EditAppDetailsState extends State<EditAppDetails> {
     }
 
     uploadToFirebase() async {
-      File file = File(logoFilePath);
+      var data = {
+        'appName': appNameController.text,
+        'appVersion': appVersionController.text,
+        'appLogoPictureUrl': appLogoPictureUrl,
+        'appShortDescription': appShortDescriptionController.text,
+        'slidePictures': slidePictures,
+        'uploadDate': uploadDateController.text,
+        'fileSize': fileSizeController.text,
+        'installLink': intstallLinkController.text,
+        'longDescription': longDescriptionController.text,
+        'userDateAndManagement': userDataAndManagementController.text,
+        'termsAndConditions': termsAndConditionController.text
+      };
+      // File file = File(logoFilePath);
 
-      String url = await ImageKit.io(
-        file.readAsBytesSync(),
-        fileName: 'afilename',
-        //  folder: "folder_name/nested_folder", (Optional)
-        privateKey: privateKey, // (Keep Confidential)
-        onUploadProgress: (progressValue) {
-          if (true) {
-            debugPrint(progressValue.toString());
-          }
-        },
-      ).then((ImagekitResponse data) {
-        /// Get your uploaded Image file link from [ImageKit.io]
-        /// then save it anywhere you want. For Example- [Firebase, MongoDB] etc.
+      // String url = await ImageKit.io(
+      //   file.readAsBytesSync(),
+      //   fileName: 'afilename',
+      //   //  folder: "folder_name/nested_folder", (Optional)
+      //   privateKey: privateKey, // (Keep Confidential)
+      //   onUploadProgress: (progressValue) {
+      //     if (true) {
+      //       debugPrint(progressValue.toString());
+      //     }
+      //   },
+      // ).then((ImagekitResponse data) {
+      //   /// Get your uploaded Image file link from [ImageKit.io]
+      //   /// then save it anywhere you want. For Example- [Firebase, MongoDB] etc.
 
-        debugPrint(data.url!); // (you will get all Response data from ImageKit)
-        return data.url!;
-      });
-      debugPrint(url);
-      setState(() {
-        data['appLogoPictureUrl'] = url;
-      });
+      //   debugPrint(data.url!); // (you will get all Response data from ImageKit)
+      //   return data.url!;
+      // });
+      // debugPrint(url);
+      // setState(() {
+      //   data['appLogoPictureUrl'] = url;
+      // });
 
-      if (data.isNotEmpty) {
-        var res = await FirebaseFirestore.instance.collection('app').get();
-        if (res.docs.isNotEmpty) {
-          await FirebaseFirestore.instance
-              .collection('app')
-              .doc(res.docs.first.id)
-              .update(data);
-        } else {
-          await FirebaseFirestore.instance.collection('app').add(data);
-        }
-        Navigator.pop(context);
+      var res = await FirebaseFirestore.instance.collection('apppp').get();
+      if (res.docs.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection('apppp')
+            .doc(res.docs.first.id)
+            .update(data);
+      } else {
+        await FirebaseFirestore.instance.collection('apppp').add(data);
       }
+      Navigator.pop(context);
     }
 
     return Scaffold(
         appBar: AppBar(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            uploadToFirebase();
+          onPressed: () async {
+            await uploadToFirebase();
           },
           child: Icon(Icons.upload_sharp),
         ),
@@ -137,11 +134,10 @@ class EditAppDetailsState extends State<EditAppDetails> {
                     width: 70,
                     decoration: BoxDecoration(
                         color: Colors.black,
-                        image:
-                            DecorationImage(fit: BoxFit.cover, image: FileImage(
-
-                                //  logoFilePath.isNotEmpt
-                                File(logoFilePath))),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                                CachedNetworkImageProvider(appLogoPictureUrl)),
                         borderRadius: BorderRadius.circular(20)),
                     child: Stack(children: [
                       Positioned(

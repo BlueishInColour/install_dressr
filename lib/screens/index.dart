@@ -26,14 +26,6 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
-    getAppDetails();
-  }
-
-  getAppDetails() async {
-    var res = await FirebaseFirestore.instance.collection('app').get();
-    setState(() {
-      details = res.docs.first.data();
-    });
   }
 
   @override
@@ -45,15 +37,24 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
         toolbarHeight: 100,
         elevation: 0,
         // backgroundColor: Colors.white,
-        title: InstallBar(
-          appName: details['appName'],
-          appVersion: details['appVersion'],
-          appLogoPictureUrl: details['appLogoPictureUrl'],
-          appShortDescription: details['appShortDescription'],
-          appSize: details['fileSize'],
-          installLink: details['installLink'],
-          uploadDate: details['uploadDate'],
-        ),
+        title: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('apppp').snapshots(),
+            builder: (context, snapshot) {
+              QueryDocumentSnapshot<Map<String, dynamic>> details =
+                  snapshot.data!.docs.first;
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return InstallBar(
+                appName: details['appName'],
+                appVersion: details['appVersion'],
+                appLogoPictureUrl: details['appLogoPictureUrl'],
+                appShortDescription: details['appShortDescription'],
+                appSize: details['fileSize'],
+                installLink: details['installLink'],
+                uploadDate: details['uploadDate'],
+              );
+            }),
 
         bottom: AppBar(
           title: TabBar(
@@ -72,14 +73,24 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
       floatingActionButton:
           //  kIsWeb ? null :
           UploadApp(),
-      body: TabBarView(controller: tabController, children: [
-        AboutApp(
-            appDescriptionText: details['longDescription'],
-            appDescriptionPictures: details['slidePictures']),
-        UserData(userData: details['userDataAndManagement']),
-        TermsAndConditions(termsAndCondition: details['termsAndConditions']),
-        ChatUs()
-      ]),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('apppp').snapshots(),
+          builder: (context, snapshot) {
+            QueryDocumentSnapshot<Map<String, dynamic>> details =
+                snapshot.data!.docs.first;
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return TabBarView(controller: tabController, children: [
+              AboutApp(
+                  appDescriptionText: details['longDescription'],
+                  appDescriptionPictures: details['slidePictures']),
+              UserData(userData: details['userDataAndManagement']),
+              TermsAndConditions(
+                  termsAndCondition: details['termsAndConditions']),
+              ChatUs()
+            ]);
+          }),
     );
   }
 }
