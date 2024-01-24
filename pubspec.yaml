@@ -42,6 +42,7 @@ dependencies:
   line_icons: ^2.0.3
   imagekit_io: ^0.0.3
   cached_network_image: ^3.3.1
+  url_launcher: ^6.2.4
 
   # //firebase
   firebase_core: ^2.24.0

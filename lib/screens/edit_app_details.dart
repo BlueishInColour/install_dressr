@@ -42,6 +42,33 @@ class EditAppDetailsState extends State<EditAppDetails> {
     });
   }
 
+  loadFormerDetails() async {
+    var res = await FirebaseFirestore.instance.collection('apppp').get();
+    QueryDocumentSnapshot snap = res.docs.first;
+    setState(() {
+      appNameController.text = snap['appName'];
+      appVersionController.text = snap['appVersion'];
+      appLogoPictureUrl = snap['appLogoPictureUrl'];
+      appShortDescriptionController.text = snap['appShortDescription'];
+
+      slidePictures = snap['slidePictures'];
+      uploadDateController.text = snap['uploadDate'];
+      fileSizeController.text = snap['fileSize'];
+      intstallLinkController.text = snap['installLink'];
+      longDescriptionController.text = snap['longDescription'];
+      userDataAndManagementController.text = snap['userDataAndManagement'];
+      termsAndConditionController.text = snap['termsAndConditions'];
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    loadFormerDetails();
+  }
+
   @override
   build(BuildContext context) {
     Widget textField(context,
@@ -58,7 +85,8 @@ class EditAppDetailsState extends State<EditAppDetails> {
             decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    color: Colors.black54, fontStyle: FontStyle.normal)),
+                    color: const Color.fromRGBO(0, 0, 0, 0.541),
+                    fontStyle: FontStyle.normal)),
           ),
         ),
       );
@@ -78,29 +106,6 @@ class EditAppDetailsState extends State<EditAppDetails> {
         'userDateAndManagement': userDataAndManagementController.text,
         'termsAndConditions': termsAndConditionController.text
       };
-      // File file = File(logoFilePath);
-
-      // String url = await ImageKit.io(
-      //   file.readAsBytesSync(),
-      //   fileName: 'afilename',
-      //   //  folder: "folder_name/nested_folder", (Optional)
-      //   privateKey: privateKey, // (Keep Confidential)
-      //   onUploadProgress: (progressValue) {
-      //     if (true) {
-      //       debugPrint(progressValue.toString());
-      //     }
-      //   },
-      // ).then((ImagekitResponse data) {
-      //   /// Get your uploaded Image file link from [ImageKit.io]
-      //   /// then save it anywhere you want. For Example- [Firebase, MongoDB] etc.
-
-      //   debugPrint(data.url!); // (you will get all Response data from ImageKit)
-      //   return data.url!;
-      // });
-      // debugPrint(url);
-      // setState(() {
-      //   data['appLogoPictureUrl'] = url;
-      // });
 
       var res = await FirebaseFirestore.instance.collection('apppp').get();
       if (res.docs.isNotEmpty) {

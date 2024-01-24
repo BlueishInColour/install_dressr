@@ -25,7 +25,7 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -65,7 +65,7 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
                 Text('about'),
                 Text('user data & management'),
                 Text('terms & conditions'),
-                Text('chat us')
+                // Text('chat us')
               ]),
         ),
       ),
@@ -88,7 +88,7 @@ class IndexState extends State<Index> with TickerProviderStateMixin {
               UserData(userData: details['userDataAndManagement']),
               TermsAndConditions(
                   termsAndCondition: details['termsAndConditions']),
-              ChatUs()
+              // ChatUs()
             ]);
           }),
     );

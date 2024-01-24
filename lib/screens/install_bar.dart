@@ -1,8 +1,10 @@
 import 'dart:core';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InstallBar extends StatefulWidget {
   InstallBar({
@@ -39,7 +41,9 @@ class InstallBarState extends State<InstallBar> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.black,
-              image: DecorationImage(image: CachedNetworkImageProvider(''))),
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(widget.appLogoPictureUrl))),
         ),
         SizedBox(width: 10),
 //-------------------
@@ -98,13 +102,24 @@ class InstallBarState extends State<InstallBar> {
                     fixedSize: MaterialStatePropertyAll(Size(50, 30)),
                     backgroundColor: MaterialStatePropertyAll(Colors.black),
                     foregroundColor: MaterialStatePropertyAll(Colors.white)),
-                onPressed: () {
+                onPressed: () async {
                   debugPrint('installit');
+                  // http.get(Uri.parse(widget.installLink));
+                  await launchUrl(Uri.parse(widget.installLink),
+                      mode: LaunchMode.inAppWebView,
+                      webOnlyWindowName: 'download dressr');
                 },
                 child: Text(
                   'install',
                   style: TextStyle(fontSize: 10),
-                ))
+                )),
+            Text(
+              widget.appVersion,
+              style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 9,
+                  fontWeight: FontWeight.w900),
+            )
           ],
         )
       ],
